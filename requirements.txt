@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+pymupdf
+pydantic
+python-multipart
+fitz
