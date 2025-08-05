@@ -4,3 +4,6 @@ pymupdf
 pydantic
 python-multipart
 fitz
+python-docx
+dotenv
+requests
