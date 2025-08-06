@@ -1,21 +1,27 @@
 import fitz  # PyMuPDF
-import docx  # python-docx
+import docx
+from typing import Optional
 
-def extract_text_from_pdf(file_path: str) -> str:
-    doc = fitz.open(file_path)
-    text = ""
-    for page in doc:
-        text += page.get_text()
-    return text
+def extract_text_from_resume(file_obj, content_type: str) -> Optional[str]:
+    try:
+        file_obj.seek(0)  # Make sure you're at start
+        print(f"📄 Extracting text from file with content type: {content_type}")
+        if content_type == "application/pdf":
+            pdf_bytes = file_obj.read()
+            doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+            text = "\n".join([page.get_text() for page in doc])
 
-def extract_text_from_docx(file_path: str) -> str:
-    doc = docx.Document(file_path)
-    return "\n".join([para.text for para in doc.paragraphs])
+        elif content_type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            # ✅ Important: reset the stream before reading with docx
+            file_obj.seek(0)
+            doc = docx.Document(file_obj)
+            text = "\n".join([para.text for para in doc.paragraphs])
 
-def extract_text(file_path: str) -> str:
-    if file_path.endswith(".pdf"):
-        return extract_text_from_pdf(file_path)
-    elif file_path.endswith(".docx"):
-        return extract_text_from_docx(file_path)
-    else:
-        raise ValueError("Unsupported file type. Only PDF and DOCX are supported.")
+        else:
+            return None
+
+        return text.strip()
+
+    except Exception as e:
+        print(f"❌ Error in extract_text_from_resume: {e}")
+        return None

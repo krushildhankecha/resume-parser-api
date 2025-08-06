@@ -7,3 +7,4 @@ fitz
 python-docx
 dotenv
 requests
+streamlit

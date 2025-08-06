@@ -3,9 +3,9 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Set this in your env or .env
+# GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # Set this in your env or .env
 
-def call_groq_for_resume_structuring(raw_text: str):
+def call_groq_for_resume_structuring(raw_text: str, GROQ_API_KEY: str) -> dict:
     prompt = f"""
 You are an AI Resume Parser. Given the following resume text, extract structured JSON with these fields:
 - name
